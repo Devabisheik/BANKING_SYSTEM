@@ -57,8 +57,8 @@ class Bank
         {
             System.out.println("====================================================");
             acc.display();
-            System.out.println("====================================================");
         }
+        System.out.println("====================================================");
 
     }
     public void showClients()
@@ -68,8 +68,8 @@ class Bank
         {
             System.out.println("====================================================");
             System.out.println(client);
-            System.out.println("====================================================");
         }
+        System.out.println("====================================================");
     }
 
     public ClientCollection getClientCollection() {

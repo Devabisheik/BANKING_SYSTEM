@@ -32,7 +32,7 @@ public class AccountCollection{
         return accounts;
     }
 
-    public Account getAccount(int accNumber)
+    public Account getAccount(long accNumber)
     {
         for(Account acc : accounts)
         {

@@ -1,20 +1,20 @@
 class Client
 {
-    private int id;
+    private String id;
     private String name;
     private String address;
     Client() {
-        this.id = 0;
+        this.id = "C000";
         this.name = "";
         this.address = "";
     }
-    Client(int id, String name, String address)
+    Client(String id, String name, String address)
     {
         this.name = name;
         this.id = id;
         this.address = address;
     }
-    public int getId()
+    public String getId()
     {
         return id;
     }
@@ -28,7 +28,7 @@ class Client
     }
     public String toString()
     {
-        return "ID: " + this.id + "Name: " + this.name + "Address: " +
+        return "ID: " + this.id + "\nName: " + this.name + "\nAddress: " +
                 this.address;
     }
 

@@ -1,5 +1,5 @@
-class Account extends Client{
-    protected int number;
+class Account{
+    protected long number;
     protected double balance;
     protected Client Owner;
     public void credit(double amount)
@@ -7,9 +7,9 @@ class Account extends Client{
         balance+=amount;
         System.out.println("Amount was credited...");
     }
-    Account(int number , Client owner)
+    Account(long number , Client owner)
     {
-        super();  // ← ADD THIS LINE
+//        super();  // ← ADD THIS LINE
         this.number = number;
         this.Owner  = owner;
     }
@@ -26,7 +26,7 @@ class Account extends Client{
         }
     }
 
-    public int getNumber() {
+    public long getNumber() {
         return number;
     }
 

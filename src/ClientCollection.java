@@ -27,9 +27,9 @@ class ClientCollection
     {
         return clients;
     }
-    public Client getClient(int id) {
+    public Client getClient(String id) {
         for (Client client : clients) {
-            if (client.getId() == id) {
+            if (client.getId().equals(id)) {
                 return client;
             }
         }

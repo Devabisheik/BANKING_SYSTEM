@@ -7,7 +7,7 @@ class Bank
         accountCollection = new AccountCollection();
         clientCollection = new ClientCollection();
     }
-    public Account findAccount(int accNumber)
+    public Account findAccount(long accNumber)
     {
         if(accountCollection.getAccount(accNumber) == null)
         {
@@ -21,7 +21,7 @@ class Bank
         System.out.println("Sorry, Your Account " + accNumber +  " was not created yet");
         return null;
     }
-    public void deposit(int accNumber, double amount)
+    public void deposit(long accNumber, double amount)
     {
         Account account = findAccount(accNumber);
         if(account!=null)
@@ -31,7 +31,7 @@ class Bank
         }
     }
 
-    public  void withdraw(int accNumber,double amount)
+    public  void withdraw(long accNumber,double amount)
     {
         Account account = findAccount(accNumber);
         if(account!=null)
@@ -40,7 +40,7 @@ class Bank
             System.out.printf("Amount: %.2f was withdrawn from Account: %d\n",amount,accNumber);
         }
     }
-    public void transfer(int fromAcc,int toAcc,double amount)
+    public void transfer(long fromAcc,long toAcc,double amount)
     {
         Account sender = findAccount(fromAcc);
         Account reciver = findAccount(toAcc);

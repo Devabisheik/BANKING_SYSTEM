@@ -1,54 +1,266 @@
-public class BankingSystem{
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class BankingSystem {
+    private static Scanner scan = new Scanner(System.in);
+
+    private static Bank bank = new Bank();
+
     public static void main(String[] args) {
-        Bank bank = new Bank();
-        Client client1 = new Client(1, "John Doe", "123 Main Street");
-        Client client2 = new Client(2, "Jane Smith", "456 Oak Avenue");
-        Client client3 = new Client(3, "Bob Johnson", "789 Pine Road");
-        bank.getClientCollection().add(client1);
-        bank.getClientCollection().add(client2);
-        bank.getClientCollection().add(client3);
+        boolean loopEngine = true;
 
-        System.out.println("\n===== CLIENTS ADDED =====");
+        while (loopEngine) {
+            try {
+                System.out.println("\n========== BANK MENU ==========");
+                System.out.println("1) Create Account");
+                System.out.println("2) Show Client");
+                System.out.println("3) Add Savings");
+                System.out.println("4) Show Account");
+                System.out.println("5) Show All Client");
+                System.out.println("6) Show All Account");
+                System.out.println("7) Deposit Money");
+                System.out.println("8) Withdraw Money");
+                System.out.println("9) Transfer Money");
+                System.out.println("10) Exit");
+
+                System.out.print("\nEnter Any Operation Number: ");
+
+                byte option = scan.nextByte();
+
+                switch (option) {
+                    case 1:
+                        createAccount();
+                        break;
+
+                    case 2:
+
+                        scan.nextLine();
+
+                        System.out.print("Enter Client ID: ");
+
+                        String ID = scan.nextLine();
+
+                        showClient(ID);
+
+                        break;
+
+                    case 3:
+                        addSavings();
+                        break;
+
+                    case 4:
+
+                        System.out.print("Enter Account Number: ");
+
+                        long accNumber = scan.nextLong();
+
+                        showAccount(accNumber);
+
+                        break;
+
+                    case 5:
+                        showAllClients();
+                        break;
+
+                    case 6:
+                        showAllAccount();
+                        break;
+
+                    case 7:
+                        deposit();
+                        break;
+
+                    case 8:
+                        withdraw();
+                        break;
+
+                    case 9:
+
+
+                        transfer();
+
+                        break;
+
+                    case 10:
+
+                        loopEngine = false;
+
+                        System.out.println("\nThank You! You are Exited.");
+
+                        break;
+
+                    default:
+
+                        System.out.println("\nInvalid Option...");
+                }
+            }
+
+
+            catch (InputMismatchException e) {
+                System.out.println("\nInvalid Input Type...");
+
+                scan.nextLine();
+            }
+        }
+    }
+
+    private static void showAllClients() {
         bank.showClients();
-        Account account1 = new Account(1001, client1);
-        Account account2 = new Account(1002, client2);
-        Account account3 = new Account(1003, client3);
-        Saving savingAccount = new Saving(1003, client3, 0.06); // 6% interest
+    }
 
-        // Add accounts to bank
-        bank.getAccountCollection().add(account1);
-        bank.getAccountCollection().add(account2);
-//        bank.getAccountCollection().add(account3);
+    private static void showAllAccount() {
+        bank.showAccounts();
+    }
+
+    private static void deposit() {
+        System.out.print("Enter Your Account Number: ");
+
+        long accNumber = scan.nextLong();
+
+        System.out.print("Enter Amount to Deposit: ");
+
+        double amount = scan.nextDouble();
+
+        bank.deposit(accNumber, amount);
+    }
+
+    private static void withdraw() {
+        System.out.print("Enter Your Account Number: ");
+
+        long accNumber = scan.nextLong();
+
+        System.out.print("Enter Amount to Withdraw: ");
+
+        double amount = scan.nextDouble();
+
+        bank.withdraw(accNumber, amount);
+    }
+
+    private static void transfer() {
+        System.out.print("Enter Sender Account Number: ");
+
+        long fromNumber = scan.nextLong();
+
+        System.out.print("Enter Receiver Account Number: ");
+
+        long toNumber = scan.nextLong();
+
+        System.out.print("Enter Amount to Transfer: ");
+
+        double amount = scan.nextDouble();
+
+        bank.transfer(fromNumber, toNumber, amount);
+    }
+
+    private static void showAccount(long accNumber) {
+        Account account =
+                bank.getAccountCollection()
+                        .getAccount(accNumber);
+
+        if (account != null) {
+            System.out.println("\n===== ACCOUNT DETAILS =====");
+
+            System.out.println(account);
+        } else {
+            System.out.println("\nAccount Not Found");
+        }
+    }
+
+    private static void addSavings() {
+        System.out.print("Enter Account Number: ");
+
+        long accNumber = scan.nextLong();
+
+
+        scan.nextLine();
+
+        System.out.print("Enter Client ID: ");
+
+        String clientID = scan.nextLine();
+
+        Client c =
+                bank.getClientCollection()
+                        .getClient(clientID);
+
+        if (c == null) {
+            System.out.println("\nClient Not Found");
+
+            return;
+        }
+
+        System.out.print("Enter Interest Rate (%): ");
+
+        int interestRate = scan.nextInt();
+
+        Saving savingAccount =
+                new Saving(
+                        accNumber,
+                        c,
+                        interestRate / 100.0
+                );
+
         bank.getAccountCollection().add(savingAccount);
 
-        System.out.println("\n===== ACCOUNTS CREATED =====");
-        bank.showAccounts();
-        System.out.println("\n===== DEPOSIT OPERATIONS =====");
-        bank.deposit(1001, 5000);
-        bank.deposit(1002, 3000);
-        bank.deposit(1003, 10000);
+        Saving savAcc =
+                (Saving) bank.findAccount(accNumber);
 
-        System.out.println("\n===== ACCOUNTS AFTER DEPOSIT =====");
-        bank.showAccounts();
-        System.out.println("\n===== WITHDRAW OPERATIONS =====");
-        bank.withdraw(1001, 1500);
-        bank.withdraw(1002, 500);
-        bank.withdraw(1003, 500);
-
-        System.out.println("\n===== ACCOUNTS AFTER WITHDRAW =====");
-        bank.showAccounts();
-        System.out.println("\n===== TRANSFER OPERATIONS =====");
-        bank.transfer(1001, 1002, 1000);
-        bank.transfer(1002, 1003, 500);
-        System.out.println("\n===== ACCOUNTS AFTER TRANSFER =====");
-        bank.showAccounts();
-        System.out.println("\n===== APPLYING INTEREST =====");
-        Saving savAcc = (Saving) bank.findAccount(1003);
         if (savAcc != null) {
             savAcc.interest();
         }
+    }
 
-        System.out.println("\n===== FINAL ACCOUNT STATUS =====");
-        bank.showAccounts();
+    private static void showClient(String id) {
+        Client client =
+                bank.getClientCollection()
+                        .getClient(id);
+
+        if (client != null) {
+            System.out.println("\n===== CLIENT DETAILS =====");
+
+            System.out.println(client);
+        } else {
+            System.out.println("\nClient Not Found");
+        }
+    }
+
+    private static void createAccount() {
+
+        scan.nextLine();
+
+        System.out.print("Enter Your Name: ");
+
+        String name = scan.nextLine();
+
+        System.out.print("Enter Your Address: ");
+
+        String address = scan.nextLine();
+
+        String clientID = IDGenerator.generateID();
+
+        long accNumber;
+
+        accNumber = IDGenerator.generateAccountNumber();
+
+
+        Client client =
+                new Client(
+                        clientID,
+                        name,
+                        address
+                );
+
+        bank.getClientCollection().add(client);
+
+        Account account =
+                new Account(
+                        accNumber,
+                        client
+                );
+
+        bank.getAccountCollection().add(account);
+
+        System.out.println("Client ID      : " + clientID);
+
+        System.out.println("Account Number : " + accNumber);
     }
 }

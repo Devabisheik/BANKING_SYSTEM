@@ -43,6 +43,7 @@ public class AccountsDAO {
         }
         con.close();
     }
+
     public static Account findAccountObject(long accNumber) throws SQLException {
         Connection con = DBConnection.getConnection();
         String query = "SELECT * FROM accounts WHERE account_number = ?";
@@ -61,6 +62,7 @@ public class AccountsDAO {
         con.close();
         return account;
     }
+
     public static List<Account> getAllAccounts() throws SQLException {
         List<Account> accounts = new ArrayList<>();
         Connection con = DBConnection.getConnection();
@@ -103,5 +105,20 @@ public class AccountsDAO {
         }
 
         con.close();
+    }
+
+    public static double getBalance(long accNumber) throws SQLException {
+        String query = "SELECT balance FROM accounts " + "WHERE account_number = ?";
+        Connection con = DBConnection.getConnection();
+        PreparedStatement pst = con.prepareStatement(query);
+        pst.setLong(1, accNumber);
+        ResultSet rs = pst.executeQuery();
+        double balance = 0;
+        if (rs.next()) {
+            balance = rs.getDouble("balance");
+        }
+        rs.close();
+        pst.close();
+        return balance;
     }
 }

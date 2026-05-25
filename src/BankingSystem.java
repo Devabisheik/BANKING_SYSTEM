@@ -19,7 +19,8 @@ public class BankingSystem {
                 System.out.println("7) Deposit Money");
                 System.out.println("8) Withdraw Money");
                 System.out.println("9) Transfer Money");
-                System.out.println("10) Exit");
+                System.out.println("10) Show History");
+                System.out.println("11) Exit");
                 System.out.print("\nEnter Any Operation Number: ");
                 byte option = scan.nextByte();
                 switch (option) {
@@ -56,6 +57,11 @@ public class BankingSystem {
                         transfer();
                         break;
                     case 10:
+                        System.out.print("Enter Account Number: ");
+                        long accountNumber = scan.nextLong();
+                        showHistory(accountNumber);
+                        break;
+                    case 11:
                         loopEngine = false;
                         System.out.println("\nThank You! You are Exited.");
                         break;
@@ -110,7 +116,7 @@ public class BankingSystem {
         Account account = AccountsDAO.findAccountObject(accNumber);
         if (account != null) {
             System.out.println("\n===== ACCOUNT DETAILS =====");
-            System.out.println(account);
+            account.display();
         } else {
             System.out.println("\nAccount Not Found");
         }
@@ -193,5 +199,15 @@ public class BankingSystem {
         System.out.println("\n===== ACCOUNT CREATED SUCCESSFULLY =====");
         System.out.println("Client ID      : " + clientID);
         System.out.println("Account Number : " + accNumber);
+    }
+    public static void showHistory(long accnumber)
+    {
+        try {
+            Transaction.seeHistory(accnumber);
+        }
+        catch (SQLException e)
+        {
+            System.out.println("CAUGHT: " + e.getMessage());
+        }
     }
 }
